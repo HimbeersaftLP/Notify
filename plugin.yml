@@ -1,0 +1,6 @@
+---
+name: Notify
+version: 0.0.1
+main: Himbeer\Notify\Main
+api: 3.17.0
+...

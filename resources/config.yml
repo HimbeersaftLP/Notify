@@ -1,0 +1,62 @@
+---
+# Notify config file:
+
+# Refer to https://discord.com/developers/docs/resources/webhook#execute-webhook for webhook messages
+# Refer to https://discord.com/developers/docs/resources/channel#embed-object for webhook embeds
+
+eventListeners:
+  leave:
+    event: "pocketmine\\event\\player\\PlayerQuitEvent"
+    variables:
+      quitMessage:
+        action: "getQuitMessage"
+      name:
+        action: [ "getPlayer", "getName" ]
+    message:
+      type: "chat"
+      text: 'Player $name left the game with the message "$quitMessage"'
+
+  join:
+    event: "pocketmine\\event\\player\\PlayerJoinEvent"
+    variables:
+      joinMessage:
+        action: "getJoinMessage"
+      name:
+        action: [ "getPlayer", "getName" ]
+    message:
+      type: "discordEmbed"
+      webhookUrl: "https://discord.com/api/webhooks/EXAMPLE"
+      data:
+        {
+          "title": "Title $name",
+          "description": "Description $joinMessage",
+          "footer": {
+            "text": "FooterText $name"
+          },
+          "author": {
+            "name": "AuthorName $name"
+          },
+          "fields": [
+            {
+              "name": "FieldName $name",
+              "value": "FieldValue $name"
+            }
+          ]
+        }
+
+  chat:
+    event: "pocketmine\\event\\player\\PlayerChatEvent"
+    priority: "LOWEST"
+    variables:
+      name:
+        action: [ "getPlayer", "getName" ]
+      message:
+        action: "getMessage"
+    message:
+      type: "discordMessage"
+      webhookUrl: "https://discord.com/api/webhooks/EXAMPLE"
+      data:
+        username: "$name"
+        content: "$message"
+
+...
